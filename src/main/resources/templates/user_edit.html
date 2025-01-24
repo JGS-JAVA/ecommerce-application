@@ -84,7 +84,8 @@
             }),
             success: function (data) { // contentType 으로 데이터전송 성공
 
-              alert("정보수정 성공")
+              alert("정보수정 성공");
+              window.location.href=`/user?id=${id}`; // 유저상세보기 주소로 이동
             },
             error:
                 function () { // 컨트롤러엣 데이터를 서비스로 전달시 문제발생
