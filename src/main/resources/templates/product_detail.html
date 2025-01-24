@@ -2,14 +2,46 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>상품 상세보기</title>
-    <link rel="stylesheet" href="/styles.css">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>제품 정보 상세보기</title>
+    <link href="/favicon.ico" rel="icon">
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 </head>
 <body>
-<h1>상품 상세 정보</h1>
-<div id="product-detail-container"></div>
-<script src="/product_detail.js"></script>
+<h1>📖 제품 상세보기</h1>
+<div id="productDetail">
+</div>
+<script>
+    // js URL SEARCH PARAMETERS
+    const params = new URLSearchParams(window.location.search);
+    const id = params.get("id");
+    $.ajax({
+        url: `/api/product/${id}`,
+        method: "GET",
+        success:
+            function (data) {
+                if(data) {
+                    $("#productDetail").html(`
+                                            <h1>${data.id}</h1>
+                                            <img src="${data.image}" style="width: 200px; height: 200px;">
+                                            <p>${data.title}</p>
+                                            <p>${data.price}</p>
+                                            <p>${data.description}</p>
+                                            <p>${data.category}</p>
+                                            <p>${data.ratingRate}</p>
+                                            <p>${data.ratingCount}</p>
+                                            <a href="/update/product?id=${data.id}">수정하기</a>
+                                            `);
+                } else {
+                    $("#productDetail").html("<p>존재하는 데이터가 없습니다.</p>");
+                }
+
+            },
+        error:
+            function () {
+                $("#productDetail").html("<p>백엔드 api 에서 데이터를 가져오는데 문제가 발생했습니다.</p>");
+            }
+    })
+</script>
 </body>
 </html>

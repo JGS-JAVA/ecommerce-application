@@ -10,6 +10,17 @@
 <body>
 <h1>사용자 상세 정보</h1>
 <div id="user-detail-container"></div>
-<script src="/user_detail.js"></script>
+<script>
+    $.ajax({
+        url: `/api/user/${id}`,
+        method: 'GET',
+        success: function (data) {
+            $("#userDetail").html(`
+
+            <h1>${data.name}</h1>
+            `);
+        }
+    })
+</script>
 </body>
 </html>

@@ -31,6 +31,11 @@ public class ApiController {
         return userService.getAllUsers();
     }
 
+    @GetMapping("/api/user/{id}")
+    public User getUser(@PathVariable("id") int id) {
+        return userService.getUserById(id);
+    }
+
     // 상품 목록 API
     @GetMapping("/api/products")
     public List<Product> getProducts() {
@@ -41,6 +46,7 @@ public class ApiController {
     // http://localhost:8080/api/carts?userId=1
     @GetMapping("/api/carts")
     public List<Cart> getCart(@RequestParam("userId") int userId) {
+
         return cartService.getCartByUserId(userId);
     }
     /*
@@ -83,13 +89,9 @@ public class ApiController {
         productService.addProduct();
     }
 
-    @GetMapping("/api/user/{userId}")
-    public     apiProductById( ) {
-
+    @GetMapping("/api/product/{id}")
+    public Product getProduct(@PathVariable("id") int id) {
+        return productService.findById(id);
+        // DB에서 가져온 데이터를 front-end 전달
     }
-    @GetMapping("/api/product/{productId}")
-    public     apiProductById( ) {
-
-    }
-}
 }

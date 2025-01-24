@@ -7,6 +7,11 @@
          VALUES (#{email}, #{username}, #{password}, #{firstname}, #{lastname}, #{phone}, #{city}, #{street}, #{streetNumber}, #{zipcode})
     </insert>
 
+    <select id="getUserById">
+        select *
+        from users
+        where id=#{id}
+    </select>
     <select id="existByEmail">
         SELECT COUNT(*)
         FROM users
@@ -18,4 +23,6 @@
         SELECT id, firstname, lastname, phone
         FROM users /* ; 제거 */
     </select>
+
+
 </mapper>
