@@ -1,8 +1,10 @@
 package com.kht.ecommerce.ecommerce_application.controller;
 
 import com.kht.ecommerce.ecommerce_application.dto.Cart;
+import com.kht.ecommerce.ecommerce_application.dto.KHTBook;
 import com.kht.ecommerce.ecommerce_application.dto.Product;
 import com.kht.ecommerce.ecommerce_application.dto.User;
+import com.kht.ecommerce.ecommerce_application.service.BookServiceImpl;
 import com.kht.ecommerce.ecommerce_application.service.CartServiceImpl;
 import com.kht.ecommerce.ecommerce_application.service.ProductServiceImpl;
 import com.kht.ecommerce.ecommerce_application.service.UserServiceImpl;
@@ -10,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.awt.print.Book;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -106,6 +109,18 @@ public class ApiController {
     @GetMapping("/api/product/{id}")
     public Product getProduct(@PathVariable("id") int id) {
         return productService.findById(id);
+        // DB에서 가져온 데이터를 front-end 전달
+    }
+
+    @GetMapping("/api/books")
+    public KHTBook getBooks(@PathVariable("id") int id) {
+        return BookServiceImpl.getAllBooks(id);
+        // DB에서 가져온 데이터를 front-end 전달
+    }
+
+    @GetMapping("/api/books/{id}")
+    public KHTBook getBook(@PathVariable("id") int id) {
+        return BookServiceImpl.getBookById(id);
         // DB에서 가져온 데이터를 front-end 전달
     }
 }
