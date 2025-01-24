@@ -16,4 +16,5 @@ public interface UserService {
    // Map<String, Object> existByEmail(String email);
     boolean existByEmail(String email);
     User getUserById(int id);
+    int editUser(User user);
 }

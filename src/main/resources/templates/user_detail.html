@@ -11,13 +11,22 @@
 <h1>사용자 상세 정보</h1>
 <div id="user-detail-container"></div>
 <script>
+    const params = new URLSearchParams(window.location.search);
+    const id = params.get('id');
     $.ajax({
         url: `/api/user/${id}`,
         method: 'GET',
         success: function (data) {
             $("#userDetail").html(`
 
-            <h1>${data.name}</h1>
+            <h1>${data.lastname} ${data.firstname}</h1>
+
+            <h1>${data.email}</h1>
+            <h1>${data.username}</h1>
+            <h1>${data.phone}</h1>
+            <h1>${data.city}</h1>
+            <!--"/user/edit?id= => 뷰 컨트롤러에서 user-edit.html 템플릿과 연결하는 주소-->
+            <a href="/user/edit?id=${data.id}">정보 수정</a>
             `);
         }
     })

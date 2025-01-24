@@ -7,10 +7,23 @@
          VALUES (#{email}, #{username}, #{password}, #{firstname}, #{lastname}, #{phone}, #{city}, #{street}, #{streetNumber}, #{zipcode})
     </insert>
 
+    <update id="editUser">
+        update users
+        set email=#{email},
+            phone=#{phone},
+            city=#{city},
+            street=#{street},
+            street_number=#{streetNumber},
+            zipcode=#{zipcode})
+        where id = #{id}
+
+    </update>
+
+
     <select id="getUserById">
         select *
         from users
-        where id=#{id}
+        where id = #{id}
     </select>
     <select id="existByEmail">
         SELECT COUNT(*)
@@ -21,7 +34,8 @@
     <select id="getAllUsers">
 
         SELECT id, firstname, lastname, phone
-        FROM users /* ; 제거 */
+        FROM users
+        /* ; 제거 */
     </select>
 
 

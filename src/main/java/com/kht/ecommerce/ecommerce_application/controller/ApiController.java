@@ -31,10 +31,24 @@ public class ApiController {
         return userService.getAllUsers();
     }
 
+    // 사용자 상세보기 api
     @GetMapping("/api/user/{id}")
     public User getUser(@PathVariable("id") int id) {
         return userService.getUserById(id);
     }
+    // 사용자 수정하기 api
+    // PathVariable = 특정사용자 데이터 주고받는 장소(주소)
+    // RequestParam = 특정 파라미터를 검색
+    // 바디는 전체, 파람은 일부
+    // Request = 데이터 전체/일부 전달받아 사용하거나 전달하기
+    @PutMapping("/api/user/edit/{id}")
+    public int getUserEdit(@PathVariable("id") int id, @RequestBody User user) {
+        System.out.println(user.toString());
+        user.setId(id);
+        System.out.println(user.toString());
+        return userService.editUser(user);
+    }
+
 
     // 상품 목록 API
     @GetMapping("/api/products")
