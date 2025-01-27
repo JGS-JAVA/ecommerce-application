@@ -4,7 +4,7 @@
 <mapper namespace="com.kht.ecommerce.ecommerce_application.mapper.BookMapper">
 
 
-    <select id="getById">
+    <select id="findById">
         select *
         from KHTBook
         where id = #{id}
@@ -25,6 +25,10 @@
             image_Path = #{imagePath}
         where id = #{id}
     </update>
+    <delete id="deleteById">
+        delete from  KHTBook
+        where id = #{id}
+    </delete>
 
 
 </mapper>

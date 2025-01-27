@@ -5,28 +5,50 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Title</title>
     <link rel="icon" href="/favicon.ico">
-    <link rel="stylesheet" href="/css/styles.css">
+
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 </head>
 <body>
+<div class="book-detail" id="book-detail">
+</div>
 <script>
-  const params = new URLSearchParams(window.location.search);
-  const bookId = params.get("id");
-  $.ajax({
-    url: `/books/${bookId}`,
-    method:'get',
-    success: function (중괄호) {
-      $("#book-detail").html(`
+    const params = new URLSearchParams(window.location.search);
+    const bookId = params.get("id");
+    $.ajax({
+        url: `/api/books/${bookId}`,
+        method: 'get',
+        success: function (중괄호) {
+            $("#book-detail").html(`
 
-<p><strong>이미지</strong><img src="${중괄호.imagePath ? 중괄호.imagePath : '/images/defaultImg.png'}"></p>
-<p><strong>책제목</strong>${중괄호.title}</p>
-<p><strong>저자</strong>${중괄호.author}</p>
-<p><strong>장르</strong>${중괄호.genre}</p>
-<!--URLSearchParams 에서 가져온 id 값으로 데이터 수정경로 설정-->
-<a class="btn" id="edit-btn" href="/books/?id=${bookId}/update">수정하기</a>
-`)
-    }
-  })
+                <p><strong>이미지</strong><img src="${중괄호.imagePath ? 중괄호.imagePath : '/images/defaultImg.png'}"></p>
+                <p><strong>책제목</strong>${중괄호.title}</p>
+                <p><strong>저자</strong>${중괄호.author}</p>
+                <p><strong>장르</strong>${중괄호.genre}</p>
+                <!--URLSearchParams 에서 가져온 id 값으로 데이터 수정경로 설정-->
+                <a class="btn" id="edit-btn" href="/books/update?id=${bookId}">수정하기</a>
+                <p><a class="btn" id="delete-btn">삭제하기</a></p>
+                `);
+        }
+    });
+    // $().click(function)  -> script 태그 안에서 만든 html 취급 안함
+    // body 태그 내에서 html 태그로 직접 작성 안한 태그는 아래처럼 작성시 동작 안함
+
+    $(document).on( "click", "#delete-btn", function () { // html 에서 "#delete-btn" 버튼 존재하고 클릭시~
+        if(confirm("정말로 삭제?")) {  // 삭제 전 한번 물어보기
+            $.ajax({
+                url: `/api/delete/${bookId}`, // 삭제 주소값
+                method: "delete",
+                success: function () {
+                    alert("책 삭제 성공")
+                    window.location.href = "/books";
+                },
+                error: function () {
+                    alert("책 삭제 실패")
+
+                }
+            })
+        }
+    });
 </script>
 </body>
 </html>

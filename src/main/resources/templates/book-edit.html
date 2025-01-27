@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>책 수정하기</title>
     <link rel="icon" href="/favicon.ico">
-    <link rel="stylesheet" href="/css/styles.css">
+
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 </head>
 <body>
@@ -21,19 +21,19 @@
     <input id="genre" name="genre" required type="text">
 
     <label for="imagePath">이미지 경로 :</label>
-    <input id="imagePath" name="imagePath" required type="text">
+    <input id="imagePath" name="imagePath" required type="file">
 
 
     <button class="btn" type="submit">수정하기</button>
 
 </form>
 
-// javascript -> jquery  로 수정하기
+<!--javascript -> jquery  로 수정하기-->
 <script>
     const params = new URLSearchParams(window.location.search);
     const bookId = params.get("id");
     $.ajax({
-        url: `/books/${bookId}`,
+        url: `/api/books/${bookId}`,
         method: 'get',
         success: function (중괄호) {
 
@@ -46,13 +46,15 @@
         }
     });
 
-    let formData = new FormData();
-    formData.append("title",$("#title").val());
-    formData.append("author",$("#author").val());
-    formData.append("genre",$("#genre").val());
-    formData.append("imagePath",$("#imagePath")[0].files[0]);
     $("#edit-form").submit(function (e) {
         e.preventDefault();
+
+        let formData = new FormData();
+        formData.append("title",$("#title").val());
+        formData.append("author",$("#author").val());
+        formData.append("genre",$("#genre").val());
+        formData.append("imagePath",$("#imagePath")[0].files[0]);
+
         $.ajax({
             url: `/api/books/${bookId}/update`, // bookId = ? 아니므로 중간에 작성가능
             method: "put",

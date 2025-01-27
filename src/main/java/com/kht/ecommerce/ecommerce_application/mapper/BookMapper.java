@@ -13,4 +13,7 @@ public interface BookMapper {
     int updateById(int id, String title,
                    String author, String genre,
                    String imagePath);
+
+
+    int deleteById(int id);
 }

@@ -15,4 +15,6 @@ public interface BookService { // interface 는 @autowired 안쓴다
     KHTBook findById(int id);
 
     int updateById(int id, String title, String author, String genre, MultipartFile file);
+
+    int deleteById(int id);
 }

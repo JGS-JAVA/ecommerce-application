@@ -52,4 +52,11 @@ public class ApiBookController {
     }
 
      */
+
+
+    @DeleteMapping("/delete/{id}")
+    public int delete(@PathVariable int id) {
+        return bookService.deleteById(id);
+    }
+
 }
