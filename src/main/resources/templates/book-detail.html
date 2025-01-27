@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Title</title>
+    <link rel="icon" href="/favicon.ico">
+    <link rel="stylesheet" href="/css/styles.css">
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+</head>
+<body>
+<script>
+  const params = new URLSearchParams(window.location.search);
+  const bookId = params.get("id");
+  $.ajax({
+    url: `/books/${bookId}`,
+    method:'get',
+    success: function (중괄호) {
+      $("#book-detail").html(`
+
+<p><strong>이미지</strong><img src="${중괄호.imagePath ? 중괄호.imagePath : '/images/defaultImg.png'}"></p>
+<p><strong>책제목</strong>${중괄호.title}</p>
+<p><strong>저자</strong>${중괄호.author}</p>
+<p><strong>장르</strong>${중괄호.genre}</p>
+<!--URLSearchParams 에서 가져온 id 값으로 데이터 수정경로 설정-->
+<a class="btn" id="edit-btn" href="/books/?id=${bookId}/update">수정하기</a>
+`)
+    }
+  })
+</script>
+</body>
+</html>

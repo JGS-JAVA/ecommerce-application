@@ -23,6 +23,8 @@ public class ApiController {
     @Autowired
     private UserServiceImpl userService;
     @Autowired
+    private BookServiceImpl bookService;
+    @Autowired
     private ProductServiceImpl productService;
     @Autowired
     private CartServiceImpl cartService;
@@ -33,24 +35,38 @@ public class ApiController {
     public List<User> getUsers() {
         return userService.getAllUsers();
     }
-
-    // 사용자 상세보기 api
-    @GetMapping("/api/user/{id}")
-    public User getUser(@PathVariable("id") int id) {
-        return userService.getUserById(id);
+    @GetMapping("/api/books")
+    public List<KHTBook> getBooks() {
+        return bookService.findAll();
     }
+
+    // 사용자 상세보기 API
+    @GetMapping("/api/user/{id}")
+    public User getUser(@PathVariable int id) {
+        User user =   userService.getUserById(id);
+        log.info(user.toString());
+        return user;
+    }
+//    @GetMapping("/api/book/{id}")
+//    public User getBook(@PathVariable int id) {
+//        User user =   bookService.getBookById(id);
+//        log.info(user.toString());
+//        return user;
+//    }
+
     // 사용자 수정하기 api
-    // PathVariable = 특정사용자 데이터 주고받는 장소(주소)
-    // RequestParam = 특정 파라미터를 검색
-    // 바디는 전체, 파람은 일부
-    // Request = 데이터 전체/일부 전달받아 사용하거나 전달하기
-    @PutMapping("/api/user/edit/{id}")
-    public int getUserEdit(@PathVariable("id") int id, @RequestBody User user) {
-        System.out.println(user.toString());
-        user.setId(id);
-        System.out.println(user.toString());
+    //  서울시 강남구 테헤란로
+    @PutMapping("/api/user/edit/{id}") // PathVariable = 특정사용자 데이터를 주고받는 장소  @Request = 데이터를 통째로 전달받거나, 일부분만 전달받아서 사용하거나 전달
+    public int getUserEdit(@PathVariable("id") int id,
+                           @RequestBody User user) {
+        System.out.println(" 유저 : " + user.toString());
+        user.setId(id); // 수정하기 주소에 존재하는 유저 아이디를 가져와서 User DTO에 넣어주고, mapper.xml where id 에서 넣어준 id를 사용할 수 있음
+        System.out.println(" 유저 : " + user.toString());
         return userService.editUser(user);
     }
+
+
+
 
 
     // 상품 목록 API
@@ -109,18 +125,6 @@ public class ApiController {
     @GetMapping("/api/product/{id}")
     public Product getProduct(@PathVariable("id") int id) {
         return productService.findById(id);
-        // DB에서 가져온 데이터를 front-end 전달
-    }
-
-    @GetMapping("/api/books")
-    public KHTBook getBooks(@PathVariable("id") int id) {
-        return BookServiceImpl.getAllBooks(id);
-        // DB에서 가져온 데이터를 front-end 전달
-    }
-
-    @GetMapping("/api/books/{id}")
-    public KHTBook getBook(@PathVariable("id") int id) {
-        return BookServiceImpl.getBookById(id);
         // DB에서 가져온 데이터를 front-end 전달
     }
 }

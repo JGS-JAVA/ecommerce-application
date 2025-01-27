@@ -4,18 +4,27 @@
 <mapper namespace="com.kht.ecommerce.ecommerce_application.mapper.BookMapper">
 
 
-    <select id="getUserById">
+    <select id="getById">
         select *
-        from books
+        from KHTBook
         where id = #{id}
     </select>
 
-    <select id="getAllBooks">
+    <select id="findAll">
 
-        SELECT id, title, author, genre, imagePath
-        FROM books
+        SELECT *
+        FROM KHTBook
 
     </select>
+    
+    <update id="updateById">
+        update khtbook
+        set title = #{title}
+            author = #{author}
+            genre = #{genre}
+            image_Path = #{imagePath}
+        where id = #{id}
+    </update>
 
 
 </mapper>

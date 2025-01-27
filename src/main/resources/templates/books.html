@@ -2,13 +2,90 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>책 목록 조회</title>
-    <link rel="icon" href="/favicon.ico">
-    <link rel="stylesheet" href="/css/styles.css">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>책 목록</title>
+    <link href="/book-styles.css" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 </head>
 <body>
+<div class="container">
+    <h1 class="title">책 목록</h1>
+    <table class="book-table">
+        <thead>
+        <tr>
+            <!-- <th>DB 에서 데이터 가져온 순번</th> -->
+            <th>ID</th>
+            <th>제목</th> <!--제목 클릭시 책 상세보기 이동-->
+            <th>저자</th>
+            <th>장르</th>
+            <th>이미지</th>
+        </tr>
+        </thead>
+        <tbody id="book-list">
 
+        </tbody>
+    </table>
+</div>
+
+<script>
+    $.ajax({
+        // url
+        /*
+      HTTP Status 404 – Not Found
+      frontend 에서 문제가 아니라
+      json WEB - controller - db 서로 상호작용 XXX
+// data = 책목록 / index = 회진순서 / value = n번째 책
+      컴퓨터는 /books 로 템플릿을 읽기 때문에 경로 충돌 발생
+        */
+        url: '/api/bookList',
+        method: 'get',
+        // method
+        success: function (책목록) {
+            /*
+           data : 책 리스트 가 배열 형태로 존재
+                    [
+                    {id:1, author:책저자1, title:책제목1, genre:장르1, imagePath:이미지 경로1 },
+                    {id:2, author:책저자2, title:책제목2, genre:장르2, imagePath:이미지 경로2 }
+                    {id:3, author:책저자3, title:책제목3, genre:장르3, imagePath:이미지 경로3 }
+                    {id:4, author:책저자4, title:책제목4, genre:장르4, imagePath:이미지 경로4 }
+                    {id:5, author:책저자5, title:책제목5, genre:장르5, imagePath:이미지 경로5 }
+                    ]
+            배열(리스트) 형태로 되어있는 값을 each 문을 활용해서 하나씩 가져오기
+            하나씩 가져온 데이터를 index, value에 담아서 출력
+            index = 가져온 순서
+            value = 가져온 값들
+            index        value   .id     .author       .title         .genre       .imagePath
+            0 번 째       =     {id:1, author:책저자1, title:책제목1, genre:장르1, imagePath:이미지 경로1 }
+            1 번 째       =     {id:2, author:책저자2, title:책제목2, genre:장르2, imagePath:이미지 경로2 }
+            2 번 째       =     {id:3, author:책저자3, title:책제목3, genre:장르3, imagePath:이미지 경로3 }
+            3 번 째       =     {id:4, author:책저자4, title:책제목4, genre:장르4, imagePath:이미지 경로4 }
+            4 번 째       =     {id:5, author:책저자5, title:책제목5, genre:장르5, imagePath:이미지 경로5 }
+            *
+            * */
+            $.each(책목록, function (순서, 번째책) {// 데이터를 배열=목록 형태로 가져오기 때문에 for-each문 을 사용해서 데이터 하나씩 출력
+                $("#book-list").append(`
+                           <tr>
+                        <!--    <td> ${순서} </td> -->
+                                <td> <a href="/books/?id=${번째책.id}">${번째책.id}</a></td>
+                                <td>${번째책.author}</td>
+                                <td>${번째책.title}</td>
+                                <td>${번째책.genre}</td>
+                                <td><img class="book-image" src="${번째책.imagePath ? 번째책.imagePath : '/images/defaultImg.png'}"></td>
+                                <!-- 이미지가 존재하지 않을 경우 대체 이미지로 설정 대체 이미지 defaultImg.png 대체
+                                    삼항 연산자 사용
+                                 -->
+                            </tr>
+                        `);
+            });
+
+        },
+        error: function () { // ajax - controller 에서 데이터를 가져오지 못할 때
+
+            $("#book-list").append(`
+            <p>서버에 문제가 생겼습니다. 고객센터로 문의바랍니다.</p>
+            `);
+        }
+    });
+</script>
 </body>
 </html>
