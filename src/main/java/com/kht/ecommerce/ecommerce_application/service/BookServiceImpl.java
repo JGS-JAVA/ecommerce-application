@@ -60,7 +60,7 @@ public class BookServiceImpl implements BookService {
             book.setAuthor(author);
             book.setGenre(genre);
             // 가짜 이미지경로로 /images 설정
-            book.setImagePath("/upload"+imgPath); //이미지는 파일에서 이미지이름만 추출한다음 글자형태로 db 저장
+            book.setImagePath("/upload/"+imgPath); //이미지는 파일에서 이미지이름만 추출한다음 글자형태로 db 저장
             // 이미지 이름만 get 가져와서 String 위치 + 이미지 이름 만 DB 저장!
             return bookMapper.updateById(id, title, author, genre, imgPath); // = 1번
            // 2번 = return bookMapper.updateById(book); // book 변수 안에 id, title, author, genre, imgPath 다 들어있다

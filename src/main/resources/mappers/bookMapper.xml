@@ -18,12 +18,12 @@
     </select>
     
     <update id="updateById">
-        update khtbook
-        set title = #{title}
-            author = #{author}
-            genre = #{genre}
-            image_Path = #{imagePath}
-        where id = #{id}
+        UPDATE KHTBOOK
+        SET author     = #{author},
+            title      = #{title},
+            genre      = #{genre},
+            image_path = #{imagePath}
+        WHERE id = #{id}
     </update>
     <delete id="deleteById">
         delete from  KHTBook
