@@ -19,31 +19,36 @@ import java.util.Map;
 @RequestMapping("/oauth/kakao")
 public class KakaoAPIController {
 
-    // ${변수이름} 은 application.properties 또는 config.properties 에 작성한 변수이름에 해당하는 값 가져오기
-    @Value("${kakao.client-id}") 
+    // ${변수이름} application.properties 나 config.properties 에 작성한 변수이름 가져오기
+    // 변수이름에 해당하는 값을 불러오기
+    @Value("${kakao.client-id}") // = ${REST_API_KEY}
     private String kakaoClientId;
 
-    /*config.properties 에서 kakao.redirect-uri 직접 가져올수 있음
-    kakao.redirect-uri=http://localhost:8080/oauth/kakao/callback 
-    하지만 보안상 아이디, 비번 등 중요정보는 properties 로 나눠서 @value 로 호출해서 사용한다
-    */
-     
-    @Value("${kakao.redirect-uri}")
+    /*
+    config.properties 에서  kakao.redirect-uri 직접적으로 가져올 수 있음
+    private String  kakao.redirect-uri=http://localhost:8080/oauth/kakao/callback
+    java-spring  자체에서 보안을 가장 중요하게 생각하기 때문에
+    아이디, 비밀번호와 같은 중요한 정보는 properties 파일로 나누어서
+    @Value 값으로 호출해서 사용할 수 있도록 분류해주는 것이 바람직함
+     */
+    @Value("${kakao.redirect-uri}")  // = ${REDIRECT_URI}"
     private String redirectUri;
 
     @Value("${kakao.client-secret}")
     private String kakaoClientSecret;
 
-    @GetMapping("/login")
-    public ResponseEntity<?> getKakaoLoginUrl() {
+    @GetMapping("/login") // RequestMapping + GetMapping = /oauth/kakao/login
+    public ResponseEntity<?> getKakaoLoginUrl() { // ResponseEntity<?> 작성을 안해도 됨 현재 제대로 진행되고 있는지 상태 확인일 뿐
+        // 카카오톡 개발 문서 에서 카카오로그인 > 예제 > 요청에 작성된 주소를 그대로 가져온 상태
+        // String url = "https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}";
         String url = "https://kauth.kakao.com/oauth/authorize?response_type=code" +
-                "&client_id=" + kakaoClientId +
-                "&redirect_uri=" + redirectUri;
-        return ResponseEntity.ok(url); // ResponseEntity 는 상태확인하기. 안써도 된다
+                "&client_id=" + kakaoClientId +"&redirect_uri=" + redirectUri;
+        return ResponseEntity.ok(url);
     }
 
+// kakao.redirect-uri=http://localhost:8080/oauth/kakao/callback
 
-    @GetMapping("/callback")
+    @GetMapping("/callback") // /oauth/kakao/callback
     public String handleCallback(@RequestParam String code) {
         String tokenUrl = "https://kauth.kakao.com/oauth/token";
 
@@ -71,19 +76,21 @@ public class KakaoAPIController {
         userHeaders.add("Authorization", "Bearer " + accessToken);
 
         HttpEntity<String> userRequest = new HttpEntity<>(userHeaders);
-        // ResponseEntity 는 상태확인하기. 안써도 된다
         ResponseEntity<Map> userResponse = restTemplate.postForEntity(userInfoUrl, userRequest, Map.class);
 
         Map userInfo = userResponse.getBody();
         Map<String, Object> properties = (Map<String, Object>) userInfo.get("properties");
-        
-        // 추후 프로젝트에 맞게 카카오에서 가져올 값 설정
-        String nickname = (String) properties.get("nickname"); // 닉네임 가져오기
+        Map<String, Object> kakaoAccount = (Map<String, Object>) userInfo.get("kakao_account");
 
-        // 한글깨짐 방지
+        // 추후 프로젝트에 맞게 카카오에서 가져올 값 설정
+        String nickname = (String) properties.get("nickname"); //현재는 닉네임만 가져오도록 설정한 상태
+        String email = (String) kakaoAccount.get("email");
+
+        // 한글 깨짐 방지
         String encodedNickname = URLEncoder.encode(nickname, StandardCharsets.UTF_8);
 
-
-        return "redirect:/signup?nickname=" + encodedNickname;
+        // ? 키=값 & 키=값 & 키=값
+        return "redirect:/signup?nickname=" + encodedNickname + "&email=" + email;
     }
+
 }

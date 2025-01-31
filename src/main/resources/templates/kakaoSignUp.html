@@ -5,27 +5,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Title</title>
     <link rel="icon" href="/favicon.ico">
-    <link rel="stylesheet" href="/css/styles.css">
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 </head>
 <body>
 <title>회원가입</title>
 <form>
-    <label>닉네님: </label>
-    <input type="text" name="kakao">
+    <label>닉네임 : </label>
+    <input type="text" name="kakao" th:value="${nickname}">
 
-    <label>이름: </label>
-    <input type="text" name="kakao">
+    <label>이름 : </label>
+    <input type="text" name="name" >
 
-    <label>이메일: </label>
-    <input type="email" name="kakao">
+    <label>이메일 : </label>
+    <input type="email" name="email" th:value="${email}" disabled>
 
+    <img th: src="http://img1.kakaocdn.net/thumb/R640x640.q70/?fname=http:
+    //t1.kakaocdn.net/account_images/default_profile.jpeg">
     <button>가입하기</button>
-
 </form>
 
+<script>
 
 
+</script>
 
 </body>
 </html>
