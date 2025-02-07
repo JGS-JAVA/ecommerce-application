@@ -11,23 +11,18 @@
 <title>회원가입</title>
 <form>
     <label>닉네임 : </label>
-    <input type="text" name="kakao" th:value="${nickname}">
+    <input type="text" name="nickname" th:value="${nickname}">
 
     <label>이름 : </label>
-    <input type="text" name="name" >
+    <input type="text" name="kakao">
 
     <label>이메일 : </label>
     <input type="email" name="email" th:value="${email}" disabled>
 
-    <img th: src="http://img1.kakaocdn.net/thumb/R640x640.q70/?fname=http:
-    //t1.kakaocdn.net/account_images/default_profile.jpeg">
+    <!-- image src th:src  카카오톡 프로필이미지 가져오기-->
+    <img th:src="${profileImg}">
+
     <button>가입하기</button>
 </form>
-
-<script>
-
-
-</script>
-
 </body>
 </html>
